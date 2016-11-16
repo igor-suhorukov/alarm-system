@@ -23,7 +23,6 @@ def mailEndpoint = camelContext.getEndpoint("smtps://smtp.mail.ru:465?username=$
 camelContext.addRoutes(new RouteBuilder() {
     def void configure() {
         from('pi4j-gpio://3?mode=DIGITAL_INPUT&pullResistance=PULL_DOWN').routeId('GPIO read')
-                //.process{println "GPIO ${it.in.getHeader('CamelPi4jPinState',String.class)}"}
                 .choice()
                 .when(header('CamelPi4jPinState').isEqualTo("LOW"))
                     .to("controlbus:route?routeId=RaspberryPI Alarm&action=resume")
